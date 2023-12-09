@@ -13,12 +13,6 @@ class Model:
     def __init__(self):
         self.wav_name = ''
 
-    # Creates the root window
-    root = tk.Tk()
-    root.title('Open File Dialog')
-    root.resizable(False, False)
-    root.geometry('300x150')
-
     # Creates function that helps find and insert .wav file into program
     def select_file(self):
         filetypes = (('wav files', '*.wav'), ('All files', '*.*'))
