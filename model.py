@@ -6,40 +6,44 @@ from tkinter.messagebox import showinfo
 from scipy.io import wavfile
 from pydub import AudioSegment
 
-
+# Creates Model class
 class Model:
+
+    # Defines variable being used to store .wav file name
     def __init__(self):
         self.wav_name = ''
 
-    # create the root window
+    # Creates the root window
     root = tk.Tk()
     root.title('Open File Dialog')
     root.resizable(False, False)
     root.geometry('300x150')
 
+    # Creates function that helps find and insert .wav file into program
     def select_file(self):
         filetypes = (('wav files', '*.wav'), ('All files', '*.*'))
         filename = fd.askopenfilename(title='Open a file', initialdir='/', filetypes=filetypes)
-        if filename:  # Check if a file was selected
+        if filename:  # Checks if a file was selected
             self.wav_name = filename
 
             showinfo(title='Selected File', message=filename)
             wav_name_label = ttk.Label(self.root, text=self.wav_name)
             wav_name_label.pack(side="bottom")
 
-            if self.wav_name.endswith(".wav"):
+            if self.wav_name.endswith(".wav"): # Checks if file ends in .wav
                 samplerate, data = wavfile.read(self.wav_name)
                 length = data.shape[0] / samplerate
                 print(f"Num channels: {data.shape[len(data.shape) - 1]}")
                 print(f"Sample Rate: {samplerate} Hz")
                 print(f"Length: {length}s")
-            else:
+            else: # Converts file to .wav if it is not already a .wav
                 audio = AudioSegment.from_file(self.wav_name)
-                if audio.channels > 1:
+                if audio.channels > 1: # Checks if .wav file has more than 1 channel and compresses it if it is more than 1
                     audio = audio.set_channels(1)
                 self.wav_name = "converted.wav"  # Set a new WAV file name
                 audio.export(self.wav_name, format="wav")
 
+    # Function to create window to choose files from file explorer on home screen of device
     def create_GUI(self):
         self.root = tk.Tk()
         self.root.title('Open File Dialog')
@@ -52,6 +56,7 @@ class Model:
 
         self.root.mainloop()
 
+    # Returns .wav file name
     def get_selected_file_path(self):
         return self.wav_name
 
@@ -61,7 +66,7 @@ model_instance = Model()
 model_instance.create_GUI()
 
 selected_file_path = model_instance.get_selected_file_path()
-if selected_file_path and os.path.exists(selected_file_path):
+if selected_file_path and os.path.exists(selected_file_path): # Checks if selected file is a .wav file and prints name to console
     print("Selected file path:", selected_file_path)
 else:
     print("No valid file path selected or file doesn't exist.")
