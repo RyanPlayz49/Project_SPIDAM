@@ -3,8 +3,10 @@ import wave
 import matplotlib.pyplot as plt
 from model import Model
 
-
+# Creates Controller class
 class Controller:
+
+    # Defines and intializes variables being used in the file
     def __init__(self):
         model = Model()
         self.wav_name = model.get_selected_file_path()
@@ -22,6 +24,8 @@ class Controller:
         self.array = [self.signal_array.tolist()]
 
         self.plotAudio()
+
+    # Defines function used to display graph of audio values
     def plotAudio(self):
         plt.figure(figsize=(15, 5))
         plt.plot(self.times, self.l_channel)
@@ -31,7 +35,7 @@ class Controller:
         plt.xlim(0, self.t_audio)
         plt.show()
 
-    # find the highest value
+    # Finds the highest value
     def getHighest(self, array):
         currentHighest = array[0]
         finalHighest = array[0]
@@ -44,7 +48,7 @@ class Controller:
                 finalHighest = currentHighest
         return finalHighest
 
-    # find lowest value
+    # Finds lowest value
     def getLowest(self, array):
         currentLowest = array[0]
         finalLowest = array[0]
@@ -57,12 +61,12 @@ class Controller:
                 finalLowest = currentLowest
         return finalLowest
 
-    # find medium value
-
+    # Finds medium value
     def getMedium(self, array):
         medium = (self.getLowest(array) + self.getHighest(array)) / 2
         return medium
 
+    # Function that calculates and plots graph of frequency values
     def plot_frequency(self):
         lowFreq = self.getLowest(self.array)
         midFreq = self.getMedium(self.array)
